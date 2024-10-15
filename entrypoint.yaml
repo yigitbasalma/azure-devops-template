@@ -29,7 +29,7 @@ variables:
     - group: commons
     - group: ${{ parameters.project }}
   - ${{ else }}:
-    - template: release-pipeline-tempaltes/variables/commons.yaml
+    - template: azure-devops-template/variables/commons.yaml
     - template: .variables/${{ parameters.environment }}.yaml
   - name: DeploymentGroup
     value: "$(ProjectName)-${{ parameters.environment }}"
@@ -43,7 +43,7 @@ steps:
     continueOnError: false
     timeoutInMinutes: 30
     inputs:
-      filePath: release-pipeline-tempaltes/scripts/prevent-concurrent-task.ps1
+      filePath: azure-devops-template/scripts/prevent-concurrent-task.ps1
       arguments: |
         -SystemDBAddress $(SystemDBAddress) `
         -SystemDBDatabase $(SystemDBDatabase) `
@@ -58,7 +58,7 @@ steps:
     displayName: Create server environment if couldn't exists
     condition: eq(variables.AutoCreateEnv, true)
     inputs:
-      filePath: release-pipeline-tempaltes/scripts/create-env-on-ado.ps1
+      filePath: azure-devops-template/scripts/create-env-on-ado.ps1
       arguments: |
         -ProjectName $(ProjectName) `
         -ParentProjectName $(ParentProjectName) `
@@ -68,7 +68,7 @@ steps:
   - task: PowerShell@2
     displayName: Gather servers from Load Balancer and add them into environment
     inputs:
-      filePath: release-pipeline-tempaltes/scripts/add-servers-from-lb.ps1
+      filePath: azure-devops-template/scripts/add-servers-from-lb.ps1
       arguments: |
         -LBAddress $(NetScalerURL) `
         -LBUsername $(NetScalerUsername) `
@@ -91,7 +91,7 @@ steps:
     condition: always()
     timeoutInMinutes: 30
     inputs:
-      filePath: release-pipeline-tempaltes/scripts/prevent-concurrent-task.ps1
+      filePath: azure-devops-template/scripts/prevent-concurrent-task.ps1
       arguments: |
         -SystemDBAddress $(SystemDBAddress) `
         -SystemDBDatabase $(SystemDBDatabase) `
