@@ -1,0 +1,103 @@
+trigger: none
+
+#pool:
+#  name: Default
+
+parameters:
+  - name: env_provider
+    displayName: Environment Provider
+    type: string
+    values:
+      - project
+      - repo
+  - name: project
+    displayName: Project Name
+    type: string
+    default: Sample Project A
+  - name: environment
+    displayName: Environment
+    type: string
+    values:
+      - dev
+      - test
+      - staging
+
+variables:
+  - name: AutoCreateEnv
+    value: false
+  - ${{ if eq( parameters.env_provider, 'project' ) }}:
+    - group: commons
+    - group: ${{ parameters.project }}
+  - ${{ else }}:
+    - template: release-pipeline-tempaltes/variables/commons.yaml
+    - template: .variables/${{ parameters.environment }}.yaml
+  - name: DeploymentGroup
+    value: "$(ProjectName)-${{ parameters.environment }}"
+
+steps:
+  - checkout: self
+  - checkout: templates
+
+  - task: PowerShell@2
+    displayName: Prevent concurrent task runs
+    continueOnError: false
+    timeoutInMinutes: 30
+    inputs:
+      filePath: release-pipeline-tempaltes/scripts/prevent-concurrent-task.ps1
+      arguments: |
+        -SystemDBAddress $(SystemDBAddress) `
+        -SystemDBDatabase $(SystemDBDatabase) `
+        -SystemDBUsername $(SystemDBUsername) `
+        -SystemDBPassword $(SystemDBPassword) `
+        -Operation check `
+        -ProjectName $(ProjectName) `
+        -ParentProjectName $(ParentProjectName) `
+        -Environment ${{ parameters.environment }}
+
+  - task: PowerShell@2
+    displayName: Create server environment if couldn't exists
+    condition: eq(variables.AutoCreateEnv, true)
+    inputs:
+      filePath: release-pipeline-tempaltes/scripts/create-env-on-ado.ps1
+      arguments: |
+        -ProjectName $(ProjectName) `
+        -ParentProjectName $(ParentProjectName) `
+        -PersonalAccessTokenB64 $(PersonalAccessTokenB64) `
+        -Environment ${{ parameters.environment }}
+
+  - task: PowerShell@2
+    displayName: Gather servers from Load Balancer and add them into environment
+    inputs:
+      filePath: release-pipeline-tempaltes/scripts/add-servers-from-lb.ps1
+      arguments: |
+        -LBAddress $(NetScalerURL) `
+        -LBUsername $(NetScalerUsername) `
+        -LBPassword $(NetScalerPassword) `
+        -VirtualServerName $(VirtualServerName) `
+        -VMUsername $(VMUsername) `
+        -VMPassword $(VMPassword) `
+        -PersonalAccessToken $(PersonalAccessToken) `
+        -DeploymentGroup $(DeploymentGroup) `
+        -ParentProjectName $(ParentProjectName) `
+        -Environment ${{ parameters.environment }}
+
+  - template: templates/load-balancer-controller.yaml
+    parameters:
+      operation: disable
+      vservers: $(VServers)
+
+  - task: PowerShell@2
+    displayName: Complete release operation
+    condition: always()
+    timeoutInMinutes: 30
+    inputs:
+      filePath: release-pipeline-tempaltes/scripts/prevent-concurrent-task.ps1
+      arguments: |
+        -SystemDBAddress $(SystemDBAddress) `
+        -SystemDBDatabase $(SystemDBDatabase) `
+        -SystemDBUsername $(SystemDBUsername) `
+        -SystemDBPassword $(SystemDBPassword) `
+        -Operation done `
+        -ProjectName $(ProjectName) `
+        -ParentProjectName $(ParentProjectName) `
+        -Environment ${{ parameters.environment }}

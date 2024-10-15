@@ -1,0 +1,22 @@
+parameters:
+  - name: operation
+    displayName: Operation Type
+    type: string
+    values:
+      - enable
+      - disable
+  - name: vservers
+    displayName: Virtual Servers
+    type: string
+
+steps:
+  - task: PowerShell@2
+    displayName: Disable vservers for deployment
+    inputs:
+      filePath: $(Agent.BuildDirectory)/s/release-pipeline-tempaltes/scripts/control-lb-status-for-servers.ps1
+      arguments: |
+        -LBAddress $(NetScalerURL) `
+        -LBUsername $(NetScalerUsername) `
+        -LBPassword $(NetScalerPassword) `
+        -VServers '${{ parameters.vservers }}' `
+        -Operation ${{ parameters.operation }}
