@@ -167,4 +167,4 @@ foreach ($sg in $serviceGroups) {
 
 # Set global variable to use after
 $vServersToJson = $vServers | ConvertTo-Json -Compress
-Write-Host "##vso[task.setvariable variable=VServers;]$vServersToJson"
+Write-Host "##vso[task.setvariable variable=VServers;isOutput=true]$vServersToJson"
