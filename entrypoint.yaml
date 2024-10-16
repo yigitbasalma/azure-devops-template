@@ -51,74 +51,80 @@ variables:
 stages:
   - stage: Prepare
     displayName: Prepare to Deployment Operation
-    steps:
-      - checkout: self
-      - checkout: templates
+    jobs:
+      - job: Job
+        steps:
+          - checkout: self
+          - checkout: templates
 
-      - task: PowerShell@2
-        displayName: Prevent concurrent task runs
-        continueOnError: false
-        timeoutInMinutes: 30
-        inputs:
-          filePath: azure-devops-template/scripts/prevent-concurrent-task.ps1
-          arguments: |
-            -SystemDBAddress $(SystemDBAddress) `
-            -SystemDBDatabase $(SystemDBDatabase) `
-            -SystemDBUsername $(SystemDBUsername) `
-            -SystemDBPassword $(SystemDBPassword) `
-            -Operation check `
-            -ProjectName $(ProjectName) `
-            -ParentProjectName $(ParentProjectName) `
-            -Environment ${{ parameters.environment }}
+          - task: PowerShell@2
+            displayName: Prevent concurrent task runs
+            continueOnError: false
+            timeoutInMinutes: 30
+            inputs:
+              filePath: azure-devops-template/scripts/prevent-concurrent-task.ps1
+              arguments: |
+                -SystemDBAddress $(SystemDBAddress) `
+                -SystemDBDatabase $(SystemDBDatabase) `
+                -SystemDBUsername $(SystemDBUsername) `
+                -SystemDBPassword $(SystemDBPassword) `
+                -Operation check `
+                -ProjectName $(ProjectName) `
+                -ParentProjectName $(ParentProjectName) `
+                -Environment ${{ parameters.environment }}
 
-      - task: PowerShell@2
-        displayName: Create server environment if couldn't exists
-        condition: eq(variables.AutoCreateEnv, true)
-        inputs:
-          filePath: azure-devops-template/scripts/create-env-on-ado.ps1
-          arguments: |
-            -ProjectName $(ProjectName) `
-            -ParentProjectName $(ParentProjectName) `
-            -PersonalAccessTokenB64 $(PersonalAccessTokenB64) `
-            -Environment ${{ parameters.environment }}
+          - task: PowerShell@2
+            displayName: Create server environment if couldn't exists
+            condition: eq(variables.AutoCreateEnv, true)
+            inputs:
+              filePath: azure-devops-template/scripts/create-env-on-ado.ps1
+              arguments: |
+                -ProjectName $(ProjectName) `
+                -ParentProjectName $(ParentProjectName) `
+                -PersonalAccessTokenB64 $(PersonalAccessTokenB64) `
+                -Environment ${{ parameters.environment }}
 
-      - task: PowerShell@2
-        displayName: Gather servers from Load Balancer and add them into environment
-        inputs:
-          filePath: azure-devops-template/scripts/add-servers-from-lb.ps1
-          arguments: |
-            -LBAddress $(NetScalerURL) `
-            -LBUsername $(NetScalerUsername) `
-            -LBPassword $(NetScalerPassword) `
-            -VirtualServerName $(VirtualServerName) `
-            -VMUsername $(VMUsername) `
-            -VMPassword $(VMPassword) `
-            -PersonalAccessToken $(PersonalAccessToken) `
-            -DeploymentGroup $(DeploymentGroup) `
-            -ParentProjectName $(ParentProjectName) `
-            -Environment ${{ parameters.environment }}
+          - task: PowerShell@2
+            displayName: Gather servers from Load Balancer and add them into environment
+            inputs:
+              filePath: azure-devops-template/scripts/add-servers-from-lb.ps1
+              arguments: |
+                -LBAddress $(NetScalerURL) `
+                -LBUsername $(NetScalerUsername) `
+                -LBPassword $(NetScalerPassword) `
+                -VirtualServerName $(VirtualServerName) `
+                -VMUsername $(VMUsername) `
+                -VMPassword $(VMPassword) `
+                -PersonalAccessToken $(PersonalAccessToken) `
+                -DeploymentGroup $(DeploymentGroup) `
+                -ParentProjectName $(ParentProjectName) `
+                -Environment ${{ parameters.environment }}
   - stage: Deploy
     displayName: Start to Deployment Operation
-    steps:
-    - template: templates/load-balancer-controller/main.yaml
-      parameters:
-        operation: disable
-        vservers: $(VServers)
+    jobs:
+      - job: Job
+        steps:
+        - template: templates/load-balancer-controller/main.yaml
+          parameters:
+            operation: disable
+            vservers: $(VServers)
   - stage: Complete
     displayName: Complete to Deployment Operation
-    steps:
-    - task: PowerShell@2
-      displayName: Complete release operation
-      condition: always()
-      timeoutInMinutes: 30
-      inputs:
-        filePath: azure-devops-template/scripts/prevent-concurrent-task.ps1
-        arguments: |
-          -SystemDBAddress $(SystemDBAddress) `
-          -SystemDBDatabase $(SystemDBDatabase) `
-          -SystemDBUsername $(SystemDBUsername) `
-          -SystemDBPassword $(SystemDBPassword) `
-          -Operation done `
-          -ProjectName $(ProjectName) `
-          -ParentProjectName $(ParentProjectName) `
-          -Environment ${{ parameters.environment }}
+    jobs:
+      - job: Job
+        steps:
+        - task: PowerShell@2
+          displayName: Complete release operation
+          condition: always()
+          timeoutInMinutes: 30
+          inputs:
+            filePath: azure-devops-template/scripts/prevent-concurrent-task.ps1
+            arguments: |
+              -SystemDBAddress $(SystemDBAddress) `
+              -SystemDBDatabase $(SystemDBDatabase) `
+              -SystemDBUsername $(SystemDBUsername) `
+              -SystemDBPassword $(SystemDBPassword) `
+              -Operation done `
+              -ProjectName $(ProjectName) `
+              -ParentProjectName $(ParentProjectName) `
+              -Environment ${{ parameters.environment }}
