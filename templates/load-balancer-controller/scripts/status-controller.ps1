@@ -30,10 +30,9 @@ switch ($Operation) {
                 "Content-Type" = "application/json"
                 "Authorization" = "Basic $authInfo"
             } -Body $body
-            Write-Host $response
 
             # Check the response
-            if ($response.errorcode -eq 0) {
+            if ($response.message -eq "") {
                 Write-Host "$($_.Name) server is disabled."
             } else {
                 Write-Host "Failed to disable vServer '$($_.Name)'. Error: $($response.message)"
