@@ -30,6 +30,7 @@ switch ($Operation) {
                 "Content-Type" = "application/json"
                 "Authorization" = "Basic $authInfo"
             } -Body $body
+            Write-Host $response
 
             # Check the response
             if ($response.errorcode -eq 0) {
