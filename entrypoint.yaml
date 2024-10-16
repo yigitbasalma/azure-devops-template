@@ -101,6 +101,8 @@ stages:
   - stage: deploy
     displayName: Start to Deployment Operation
     dependsOn: prepare
+    variables:
+      VServers: $[stageDependencies.prepare.Job.outputs['GetServers.VServers']]
     jobs:
       - job: Job
         steps:
@@ -110,7 +112,7 @@ stages:
           - template: templates/load-balancer-controller/main.yaml
             parameters:
               operation: disable
-              vservers: $[stageDependencies.prepare.Job.outputs['GetServers.VServers']]
+              vservers: $(VServers)
   - stage: complete
     displayName: Complete to Deployment Operation
     condition: always()
