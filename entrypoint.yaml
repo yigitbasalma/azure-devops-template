@@ -114,7 +114,7 @@ stages:
             - template: templates/load-balancer-controller/main.yaml
               parameters:
                 operation: disable
-                deployment_part: $(VServers)
+                deployment_part: ${{ part }}
                 vservers: $(VServers)
   - stage: complete
     displayName: Complete to Deployment Operation

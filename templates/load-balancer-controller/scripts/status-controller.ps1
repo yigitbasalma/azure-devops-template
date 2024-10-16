@@ -17,6 +17,10 @@ switch ($Operation) {
     }
     "disable" {
         $($VServers | ConvertFrom-Json) | ForEach-Object {
+            if ( $DeploymentPart -ne $_.DeployGroup ) {
+                continue
+            }
+
             # Define the body of the request to disable the vServer
             $body = @{
                 servicegroup = @{
