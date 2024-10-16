@@ -104,15 +104,18 @@ stages:
     variables:
       VServers: $[stageDependencies.prepare.Job.outputs['GetServers.VServers']]
     jobs:
-      - job: Job
-        steps:
-          - checkout: self
-          - checkout: templates
+      - ${{ each part in split(variables.DeploymentParts, ',') }}:
+        - job: Job
+          displayName: Deployment for ${{ part }}
+          steps:
+            - checkout: self
+            - checkout: templates
 
-          - template: templates/load-balancer-controller/main.yaml
-            parameters:
-              operation: disable
-              vservers: $(VServers)
+            - template: templates/load-balancer-controller/main.yaml
+              parameters:
+                operation: disable
+                deployment_part: $(VServers)
+                vservers: $(VServers)
   - stage: complete
     displayName: Complete to Deployment Operation
     condition: always()

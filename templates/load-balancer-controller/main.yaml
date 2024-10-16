@@ -8,6 +8,9 @@ parameters:
   - name: vservers
     displayName: Virtual Servers
     type: string
+  - name: deployment_part
+    displayName: Deployment Part
+    type: string
 
 steps:
   - task: PowerShell@2
@@ -19,4 +22,5 @@ steps:
         -LBUsername $(NetScalerUsername) `
         -LBPassword $(NetScalerPassword) `
         -VServers '${{ parameters.vservers }}' `
+        -DeploymentPart '${{ parameters.deployment_part }}' `
         -Operation ${{ parameters.operation }}

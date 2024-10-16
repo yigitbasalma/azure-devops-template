@@ -4,6 +4,7 @@ param (
     [string]$LBPassword,
 
     [string]$VServers,
+    [string]$DeploymentPart,
     [string]$Operation
 )
 
