@@ -7,14 +7,14 @@ param (
     [string]$Operation
 )
 
+$authInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$LBUsername`:$LBPassword"))
+$baseApiUrl = "$LBAddress/nitro/v1/config"
+
 switch ($Operation) {
     "enable" {
         # Enable vservers
     }
     "disable" {
-        $authInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$LBUsername`:$LBPassword"))
-        $baseApiUrl = "$LBAddress/nitro/v1/config"
-
         $($VServers | ConvertFrom-Json) | ForEach-Object {
             # Define the body of the request to disable the vServer
             $body = @{
