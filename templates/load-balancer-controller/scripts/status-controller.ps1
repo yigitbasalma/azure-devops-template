@@ -18,16 +18,17 @@ switch ($Operation) {
         $($VServers | ConvertFrom-Json) | ForEach-Object {
             # Define the body of the request to disable the vServer
             $body = @{
-                servicegroup_servicegroupmember_binding = @{
-                    servername       = $_.Name
-                    servicegroupname = $_.ServiceGroup
-                    port             = $_.Port
+                params = @{
+                    action  = "disable"
+                }
+                service = @{
+                    name    = $_.Name
                 }
             } | ConvertTo-Json
 
             # Send the request to disable the vServer
-            $response = Invoke-RestMethod -Uri "$baseApiUrl/servicegroup_servicegroupmember_binding?action=disable" -Method Post -Headers @{
-                "Content-Type" = "application/json"
+            $response = Invoke-RestMethod -Uri "$baseApiUrl" -Method Post -Headers @{
+                "Content-Type" = "application/x-www-form-urlencoded"
                 "Authorization" = "Basic $authInfo"
             } -Body $body
 
