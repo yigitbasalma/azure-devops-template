@@ -58,6 +58,7 @@ foreach ($sg in $serviceGroups) {
             $server = [PSCustomObject]@{
                 Name         = $_.servername
                 IPAddress    = $_.ip
+                Port         = $_.port
                 ServiceGroup = $serviceGroupName
                 DeployGroup  = $deployGroupIdentifier
             }
