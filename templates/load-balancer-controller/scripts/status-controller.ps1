@@ -26,7 +26,7 @@ switch ($Operation) {
             $response = Invoke-RestMethod -Uri "$LBAddress/lbvserver?action=disable" -Method Put -Headers @{
                 "Content-Type" = "application/json"
                 "Authorization" = "Basic $authInfo"
-            } -Body $body -SkipCertificateCheck
+            } -Body $body
 
             # Check the response
             if ($response.errorcode -eq 0) {
