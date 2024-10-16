@@ -109,7 +109,7 @@ stages:
           - template: templates/load-balancer-controller/main.yaml
             parameters:
               operation: disable
-              vservers: $(VServers)
+              vservers: $(stageDependencies.prepare.Job.outputs['VServers'])
   - stage: complete
     displayName: Complete to Deployment Operation
     condition: always()
