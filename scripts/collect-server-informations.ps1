@@ -6,6 +6,7 @@ param (
 )
 
 $vServers = @()
+$environmentName = "$ProjectName-$Environment"
 $url = "https://dev.azure.com/yigitbasalma/$ParentProjectName/_apis/pipelines/environments"
 $headers = @{
     "Authorization" = "Basic $PersonalAccessTokenB64"

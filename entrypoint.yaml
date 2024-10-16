@@ -103,7 +103,7 @@ stages:
 
           - task: PowerShell@2
             name: GetServers
-            displayName: Create server environment if couldn't exists
+            displayName: Collect server informations from ADS
             inputs:
               filePath: azure-devops-template/scripts/collect-server-informations.ps1
               arguments: |
