@@ -13,7 +13,31 @@ $baseApiUrl = "$LBAddress/nitro/v1/config"
 
 switch ($Operation) {
     "enable" {
-        # Enable vservers
+        $($VServers | ConvertFrom-Json) | ForEach-Object {
+            if ( $DeploymentPart -ne $_.DeployGroup ) {
+                # Define the body of the request to disable the vServer
+                $body = @{
+                    servicegroup = @{
+                        servername = $_.Name
+                        servicegroupname = $_.ServiceGroup
+                        port = $_.Port
+                    }
+                } | ConvertTo-Json
+
+                # Send the request to disable the vServer
+                $response = Invoke-RestMethod -Uri "$baseApiUrl/servicegroup?action=enable" -Method Post -Headers @{
+                    "Content-Type" = "application/json"
+                    "Authorization" = "Basic $authInfo"
+                } -Body $body
+
+                # Check the response
+                if ($response.message -eq $null) {
+                    Write-Host "$( $_.Name ) server is disabled."
+                } else {
+                    Write-Host "Failed to disable vServer '$( $_.Name )'. Error: $( $response.message )"
+                }
+            }
+        }
     }
     "disable" {
         $($VServers | ConvertFrom-Json) | ForEach-Object {
