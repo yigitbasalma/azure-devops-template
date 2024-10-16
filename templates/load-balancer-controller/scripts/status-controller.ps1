@@ -24,7 +24,7 @@ switch ($Operation) {
             } | ConvertTo-Json
 
             # Send the request to disable the vServer
-            $response = Invoke-RestMethod -Uri "$baseApiUrl/vserver?action=disable" -Method Put -Headers @{
+            $response = Invoke-RestMethod -Uri "$baseApiUrl/vserver?action=disable" -Method Post -Headers @{
                 "Content-Type" = "application/json"
                 "Authorization" = "Basic $authInfo"
             } -Body $body
