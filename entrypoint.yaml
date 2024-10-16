@@ -102,27 +102,33 @@ stages:
     jobs:
       - job: Job
         steps:
-        - template: templates/load-balancer-controller/main.yaml
-          parameters:
-            operation: disable
-            vservers: $(VServers)
+          - checkout: self
+          - checkout: templates
+
+          - template: templates/load-balancer-controller/main.yaml
+            parameters:
+              operation: disable
+              vservers: $(VServers)
   - stage: Complete
     displayName: Complete to Deployment Operation
     jobs:
       - job: Job
         steps:
-        - task: PowerShell@2
-          displayName: Complete release operation
-          condition: always()
-          timeoutInMinutes: 30
-          inputs:
-            filePath: azure-devops-template/scripts/prevent-concurrent-task.ps1
-            arguments: |
-              -SystemDBAddress $(SystemDBAddress) `
-              -SystemDBDatabase $(SystemDBDatabase) `
-              -SystemDBUsername $(SystemDBUsername) `
-              -SystemDBPassword $(SystemDBPassword) `
-              -Operation done `
-              -ProjectName $(ProjectName) `
-              -ParentProjectName $(ParentProjectName) `
-              -Environment ${{ parameters.environment }}
+          - checkout: self
+          - checkout: templates
+
+          - task: PowerShell@2
+            displayName: Complete release operation
+            condition: always()
+            timeoutInMinutes: 30
+            inputs:
+              filePath: azure-devops-template/scripts/prevent-concurrent-task.ps1
+              arguments: |
+                -SystemDBAddress $(SystemDBAddress) `
+                -SystemDBDatabase $(SystemDBDatabase) `
+                -SystemDBUsername $(SystemDBUsername) `
+                -SystemDBPassword $(SystemDBPassword) `
+                -Operation done `
+                -ProjectName $(ProjectName) `
+                -ParentProjectName $(ParentProjectName) `
+                -Environment ${{ parameters.environment }}
