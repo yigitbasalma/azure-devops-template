@@ -23,7 +23,7 @@ switch ($Operation) {
             } | ConvertTo-Json
 
             # Send the request to disable the vServer
-            $response = Invoke-RestMethod -Uri "$(LBAddress)/lbvserver?action=disable" -Method Put -Headers @{
+            $response = Invoke-RestMethod -Uri "$LBAddress/lbvserver?action=disable" -Method Put -Headers @{
                 "Content-Type" = "application/json"
                 "Authorization" = "Basic $authInfo"
             } -Body $body -SkipCertificateCheck
