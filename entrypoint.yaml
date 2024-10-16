@@ -42,9 +42,7 @@ variables:
     value: "$(ProjectName)-${{ parameters.environment }}"
   - name: DeploymentParts
     ${{ if eq( parameters.deployment_parts, 'all' ) }}:
-      value:
-        - part1
-        - part2
+      value: part1,part2
     ${{ else }}:
       value: ${{ parameters.deployment_parts }}ß
 
