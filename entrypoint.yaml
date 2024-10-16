@@ -47,7 +47,7 @@ variables:
       value: ${{ parameters.deployment_parts }}ß
 
 stages:
-  - stage: Prepare
+  - stage: prepare
     displayName: Prepare to Deployment Operation
     jobs:
       - job: Job
@@ -97,8 +97,9 @@ stages:
                 -DeploymentGroup $(DeploymentGroup) `
                 -ParentProjectName $(ParentProjectName) `
                 -Environment ${{ parameters.environment }}
-  - stage: Deploy
+  - stage: deploy
     displayName: Start to Deployment Operation
+    dependsOn: prepare
     jobs:
       - job: Job
         steps:
@@ -109,7 +110,7 @@ stages:
             parameters:
               operation: disable
               vservers: $(VServers)
-  - stage: Complete
+  - stage: complete
     displayName: Complete to Deployment Operation
     condition: always()
     jobs:
