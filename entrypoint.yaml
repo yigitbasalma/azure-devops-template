@@ -83,6 +83,7 @@ stages:
                 -Environment ${{ parameters.environment }}
 
           - task: PowerShell@2
+            name: GetServers
             displayName: Gather servers from Load Balancer and add them into environment
             inputs:
               filePath: azure-devops-template/scripts/add-servers-from-lb.ps1
@@ -109,7 +110,7 @@ stages:
           - template: templates/load-balancer-controller/main.yaml
             parameters:
               operation: disable
-              vservers: $[stageDependencies.prepare.Job.outputs['VServers']]
+              vservers: $[stageDependencies.prepare.Job.outputs['GetServers.VServers']]
   - stage: complete
     displayName: Complete to Deployment Operation
     condition: always()
