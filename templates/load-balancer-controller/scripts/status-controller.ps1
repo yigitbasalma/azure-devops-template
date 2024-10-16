@@ -13,6 +13,7 @@ switch ($Operation) {
     }
     "disable" {
         $authInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$LBUsername`:$LBPassword"))
+        $baseApiUrl = "$LBAddress/nitro/v1/config"
 
         $($VServers | ConvertFrom-Json) | ForEach-Object {
             # Define the body of the request to disable the vServer
@@ -23,7 +24,7 @@ switch ($Operation) {
             } | ConvertTo-Json
 
             # Send the request to disable the vServer
-            $response = Invoke-RestMethod -Uri "$LBAddress/lbvserver?action=disable" -Method Put -Headers @{
+            $response = Invoke-RestMethod -Uri "$baseApiUrl/lbvserver?action=disable" -Method Put -Headers @{
                 "Content-Type" = "application/json"
                 "Authorization" = "Basic $authInfo"
             } -Body $body
