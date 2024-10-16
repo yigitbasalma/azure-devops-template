@@ -32,6 +32,8 @@ parameters:
 variables:
   - name: AutoCreateEnv
     value: false
+  - name: AutoRegisterServers
+    value: false
   - ${{ if eq( parameters.env_provider, 'project' ) }}:
     - group: commons
     - group: ${{ parameters.project }}
@@ -83,7 +85,7 @@ stages:
                 -Environment ${{ parameters.environment }}
 
           - task: PowerShell@2
-            name: GetServers
+            condition: eq(variables.AutoRegisterServers, true)
             displayName: Gather servers from Load Balancer and add them into environment
             inputs:
               filePath: azure-devops-template/scripts/add-servers-from-lb.ps1
@@ -97,6 +99,17 @@ stages:
                 -PersonalAccessToken $(PersonalAccessToken) `
                 -DeploymentGroup $(DeploymentGroup) `
                 -ParentProjectName $(ParentProjectName) `
+                -Environment ${{ parameters.environment }}
+
+          - task: PowerShell@2
+            name: GetServers
+            displayName: Create server environment if couldn't exists
+            inputs:
+              filePath: azure-devops-template/scripts/collect-server-informations.ps1
+              arguments: |
+                -ProjectName $(ProjectName) `
+                -ParentProjectName $(ParentProjectName) `
+                -PersonalAccessTokenB64 $(PersonalAccessTokenB64) `
                 -Environment ${{ parameters.environment }}
   - stage: deploy
     displayName: Start to Deployment Operation

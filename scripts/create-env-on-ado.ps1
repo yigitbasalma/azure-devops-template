@@ -22,8 +22,7 @@ $body = @{
 try {
     $response = Invoke-WebRequest -Uri $url -Method POST -Headers $headers -Body $body
 
-    if ( $successCodes.Contains($response.StatusCode))
-    {
+    if ( $successCodes.Contains($response.StatusCode) ) {
         Write-Host "Resource created successfully."
     } else {
         Write-Host "Invalid response code found: $( $response.StatusCode ) with $( $response.Content )"
@@ -32,8 +31,7 @@ try {
 } catch {
     $statusCode = $_.Exception.Response.StatusCode.value__
 
-    if ($statusCode -eq 500)
-    {
+    if ($statusCode -eq 500) {
         Write-Host "Resource already exists. Skipping ..."
     } else {
         Write-Host "An error occurred: $( $_.Exception.Message )"
