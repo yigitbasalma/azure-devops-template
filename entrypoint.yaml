@@ -81,7 +81,7 @@ steps:
         -ParentProjectName $(ParentProjectName) `
         -Environment ${{ parameters.environment }}
 
-  - template: templates/load-balancer-controller.yaml
+  - template: templates/load-balancer-controller/main.yaml
     parameters:
       operation: disable
       vservers: $(VServers)
