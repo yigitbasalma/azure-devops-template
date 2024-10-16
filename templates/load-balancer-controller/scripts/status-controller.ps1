@@ -32,7 +32,7 @@ switch ($Operation) {
             } -Body $body
 
             # Check the response
-            if ($response.message -eq "") {
+            if ($response.message -eq $null) {
                 Write-Host "$($_.Name) server is disabled."
             } else {
                 Write-Host "Failed to disable vServer '$($_.Name)'. Error: $($response.message)"
