@@ -24,10 +24,6 @@ parameters:
   - name: deployment_parts
     displayName: Deployment Part(s)
     type: string
-    values:
-      - all
-      - part1
-      - part2
 
 stages:
   - stage: prepare
@@ -98,7 +94,7 @@ stages:
     variables:
       VServers: $[stageDependencies.prepare.Job.outputs['GetServers.VServers']]
     jobs:
-      - ${{ each part in split(variables.DeploymentParts, ',') }}:
+      - ${{ each part in split(parameters.DeploymentParts, ',') }}:
         - job: ${{ part }}
           displayName: Deployment for ${{ part }}
           ${{ if eq(part, 'part2') }}:
