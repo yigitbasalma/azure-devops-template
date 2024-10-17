@@ -28,6 +28,9 @@ parameters:
       - all
       - part1
       - part2
+  - name: main_repo_dir
+    displayName: Main Repository Base
+    type: string
 
 variables:
   - name: AutoCreateEnv
@@ -38,7 +41,7 @@ variables:
   - ${{ if eq( parameters.env_provider, 'project' ) }}:
     - group: ${{ parameters.project }}
   - ${{ else }}:
-    - template: ../.variables/${{ parameters.environment }}.yaml
+    - template: ${{ parameters.main_repo_dir }}/.variables/${{ parameters.environment }}.yaml
   - name: DeploymentGroup
     value: "$(ProjectName)-${{ parameters.environment }}"
   - name: DeploymentParts
