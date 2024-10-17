@@ -35,6 +35,10 @@ variables:
   - name: AutoRegisterServers
     value: false
   - group: commons
+  - ${{ if eq( parameters.env_provider, 'project' ) }}:
+    - group: ${{ parameters.project }}
+  - ${{ else }}:
+    - template: ../.variables/${{ parameters.environment }}.yaml
   - name: DeploymentGroup
     value: "$(ProjectName)-${{ parameters.environment }}"
   - name: DeploymentParts
