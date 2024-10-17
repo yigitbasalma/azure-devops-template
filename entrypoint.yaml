@@ -35,10 +35,6 @@ variables:
   - name: AutoRegisterServers
     value: false
   - group: commons
-  - ${{ if eq( parameters.env_provider, 'project' ) }}:
-    - group: ${{ parameters.project }}
-  - ${{ else }}:
-    - template: C:\Users\Administrator\Desktop\agent\_work\3\s\windows-service-tests\.variables\${{ parameters.environment }}.yaml
   - name: DeploymentGroup
     value: "$(ProjectName)-${{ parameters.environment }}"
   - name: DeploymentParts
@@ -50,6 +46,11 @@ variables:
 stages:
   - stage: prepare
     displayName: Prepare to Deployment Operation
+    variables:
+      - ${{ if eq( parameters.env_provider, 'project' ) }}:
+          - group: ${{ parameters.project }}
+      - ${{ else }}:
+          - template: .variables/${{ parameters.environment }}.yaml
     jobs:
       - job: Job
         steps:
