@@ -31,6 +31,9 @@ stages:
           - checkout: self
           - checkout: templates
 
+          - powershell: |
+              Write-Host "Staging artifacts in: $(Packages)"
+
           - task: PowerShell@2
             displayName: Prevent concurrent task runs
             continueOnError: false
