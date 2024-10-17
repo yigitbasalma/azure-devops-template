@@ -29,28 +29,9 @@ parameters:
       - part1
       - part2
 
-variables:
-  - name: AutoCreateEnv
-    value: false
-  - name: AutoRegisterServers
-    value: false
-  - group: commons
-  - name: DeploymentGroup
-    value: "$(ProjectName)-${{ parameters.environment }}"
-  - name: DeploymentParts
-    ${{ if eq( parameters.deployment_parts, 'all' ) }}:
-      value: part1,part2
-    ${{ else }}:
-      value: ${{ parameters.deployment_parts }}
-
 stages:
   - stage: prepare
     displayName: Prepare to Deployment Operation
-    variables:
-      - ${{ if eq( parameters.env_provider, 'project' ) }}:
-          - group: ${{ parameters.project }}
-      - ${{ else }}:
-          - template: .variables/${{ parameters.environment }}.yaml
     jobs:
       - job: Job
         steps:
