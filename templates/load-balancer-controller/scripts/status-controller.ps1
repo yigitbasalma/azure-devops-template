@@ -18,7 +18,7 @@ switch ($Operation) {
                 # Define the body of the request to disable the vServer
                 $body = @{
                     server = @{
-                        servername = $_.Name
+                        name = $_.Name
                     }
                 } | ConvertTo-Json
 
@@ -43,7 +43,7 @@ switch ($Operation) {
                 # Define the body of the request to disable the vServer
                 $body = @{
                     server = @{
-                        servername = $_.Name
+                        name = $_.Name
                     }
                 } | ConvertTo-Json
 
