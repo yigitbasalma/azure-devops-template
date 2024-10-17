@@ -31,9 +31,6 @@ stages:
           - checkout: self
           - checkout: templates
 
-          - powershell: |
-              Write-Host "Staging artifacts in: $(Packages)"
-
           - task: PowerShell@2
             displayName: Prevent concurrent task runs
             continueOnError: false
@@ -88,6 +85,11 @@ stages:
                 -ParentProjectName $(ParentProjectName) `
                 -PersonalAccessTokenB64 $(PersonalAccessTokenB64) `
                 -Environment ${{ parameters.environment }}
+
+          - template: templates/artifact-controller/main.yaml
+            parameters:
+              environment: ${{ parameters.environment }}
+              packages: $(Packages)
   - stage: deploy
     displayName: Start to Deployment Operation
     dependsOn: prepare
