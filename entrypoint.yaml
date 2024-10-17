@@ -38,7 +38,7 @@ variables:
   - ${{ if eq( parameters.env_provider, 'project' ) }}:
     - group: ${{ parameters.project }}
   - ${{ else }}:
-    - template: $(System.DefaultWorkingDirectory)/.variables/${{ parameters.environment }}.yaml
+    - template: C:\Users\Administrator\Desktop\agent\_work\3\s\windows-service-tests\.variables\${{ parameters.environment }}.yaml
   - name: DeploymentGroup
     value: "$(ProjectName)-${{ parameters.environment }}"
   - name: DeploymentParts
