@@ -2,6 +2,3 @@ parameters:
   - name: environment
     displayName: Environment
     type: string
-  - name: deployment_part
-    displayName: Deployment Part
-    type: string

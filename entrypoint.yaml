@@ -34,11 +34,10 @@ variables:
     value: false
   - name: AutoRegisterServers
     value: false
+  - group: commons
   - ${{ if eq( parameters.env_provider, 'project' ) }}:
-    - group: commons
     - group: ${{ parameters.project }}
   - ${{ else }}:
-    - template: azure-devops-template/variables/commons.yaml
     - template: .variables/${{ parameters.environment }}.yaml
   - name: DeploymentGroup
     value: "$(ProjectName)-${{ parameters.environment }}"
@@ -46,7 +45,7 @@ variables:
     ${{ if eq( parameters.deployment_parts, 'all' ) }}:
       value: part1,part2
     ${{ else }}:
-      value: ${{ parameters.deployment_parts }}ß
+      value: ${{ parameters.deployment_parts }}
 
 stages:
   - stage: prepare
