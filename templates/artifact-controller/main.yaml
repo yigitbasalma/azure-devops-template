@@ -13,4 +13,4 @@ steps:
       filePath: $(Agent.BuildDirectory)/s/azure-devops-template/templates/artifact-controller/scripts/create-artifact.ps1
       arguments: |
         -Environment ${{ parameters.environment }} `
-        -Packages ${{ parameters.environment }}
+        -Packages ${{ parameters.packages }}
