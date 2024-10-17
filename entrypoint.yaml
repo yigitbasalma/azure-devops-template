@@ -94,7 +94,7 @@ stages:
     variables:
       VServers: $[stageDependencies.prepare.Job.outputs['GetServers.VServers']]
     jobs:
-      - ${{ each part in split(parameters.DeploymentParts, ',') }}:
+      - ${{ each part in split(parameters.deployment_parts, ',') }}:
         - job: ${{ part }}
           displayName: Deployment for ${{ part }}
           ${{ if eq(part, 'part2') }}:
