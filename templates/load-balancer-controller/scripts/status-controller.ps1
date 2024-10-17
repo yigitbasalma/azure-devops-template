@@ -17,15 +17,13 @@ switch ($Operation) {
             if ( $DeploymentPart -ne $_.DeployGroup ) {
                 # Define the body of the request to disable the vServer
                 $body = @{
-                    servicegroup = @{
+                    server = @{
                         servername = $_.Name
-                        servicegroupname = $_.ServiceGroup
-                        port = $_.Port
                     }
                 } | ConvertTo-Json
 
                 # Send the request to disable the vServer
-                $response = Invoke-RestMethod -Uri "$baseApiUrl/servicegroup?action=enable" -Method Post -Headers @{
+                $response = Invoke-RestMethod -Uri "$baseApiUrl/server?action=enable" -Method Post -Headers @{
                     "Content-Type" = "application/json"
                     "Authorization" = "Basic $authInfo"
                 } -Body $body
@@ -44,15 +42,13 @@ switch ($Operation) {
             if ( $DeploymentPart -ne $_.DeployGroup ) {
                 # Define the body of the request to disable the vServer
                 $body = @{
-                    servicegroup = @{
+                    server = @{
                         servername = $_.Name
-                        servicegroupname = $_.ServiceGroup
-                        port = $_.Port
                     }
                 } | ConvertTo-Json
 
                 # Send the request to disable the vServer
-                $response = Invoke-RestMethod -Uri "$baseApiUrl/servicegroup?action=disable" -Method Post -Headers @{
+                $response = Invoke-RestMethod -Uri "$baseApiUrl/server?action=disable" -Method Post -Headers @{
                     "Content-Type" = "application/json"
                     "Authorization" = "Basic $authInfo"
                 } -Body $body
