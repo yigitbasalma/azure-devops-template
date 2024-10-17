@@ -120,6 +120,8 @@ stages:
       - ${{ each part in split(variables.DeploymentParts, ',') }}:
         - job: ${{ part }}
           displayName: Deployment for ${{ part }}
+          ${{ if eq(part, 'part2') }}:
+            dependsOn: part1
           steps:
             - checkout: self
             - checkout: templates
