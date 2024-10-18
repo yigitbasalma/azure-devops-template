@@ -4,6 +4,8 @@ param (
     [string]$ArtifactDropLocation
 )
 
+Get-ChildItem -Path $ArtifactDropLocation
+
 $($Packages | ConvertFrom-Json) | ForEach-Object {
     $appArtifactZipLocation = "$ArtifactDropLocation\$($_.artifact.name)"
     $configArtifactZipLocation = "$ArtifactDropLocation\$($_.artifact.config)"
