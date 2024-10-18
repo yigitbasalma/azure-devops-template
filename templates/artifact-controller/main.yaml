@@ -14,6 +14,7 @@ steps:
       arguments: |
         -Environment ${{ parameters.environment }} `
         -Packages '${{ parameters.packages }}' `
+        -BuildNumber '$(build.BuildNumber)' `
         -CurrentBuildPath '$(build.artifactstagingdirectory)' `
         -ArtifactDropLocation '$(ArtifactDropLocation)'
 

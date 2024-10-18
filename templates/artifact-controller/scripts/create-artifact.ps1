@@ -1,6 +1,7 @@
 param (
     [string]$Environment,
     [string]$Packages,
+    [string]$BuildNumber,
     [string]$CurrentBuildPath,
     [string]$ArtifactDropLocation
 )
@@ -27,7 +28,7 @@ $($Packages | ConvertFrom-Json) | ForEach-Object {
             Remove-Item -Path $configArtifactDestLocation -Force -Recurse
         }
 
-        $publishPath = "$CurrentBuildPath\publish\$(build.BuildNumber)"
+        $publishPath = "$CurrentBuildPath\publish\$BuildNumber"
 
         if( -Not(Test-Path $publishPath) ) {
             New-Item -ItemType Directory -Path $publishPath
