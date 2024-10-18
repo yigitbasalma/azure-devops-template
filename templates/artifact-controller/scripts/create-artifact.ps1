@@ -43,7 +43,7 @@ $($Packages | ConvertFrom-Json) | ForEach-Object {
 
         # If environment is pre-prod which is the last environment before production, save artifact into the NAS
         # for production deployment
-        if ( $Environment -eq "pre-prod" ) {
+        if ( $Environment -eq "dev" ) {
             $nasDestinationPath = "$nasLocation\$Environment\$ProjectName\$($_.name)\$BuildNumber"
 
             Write-Host "Target environment is $Environment. Saving artifact into $nasDestinationPath for the production deployment." -ForegroundColor Green
