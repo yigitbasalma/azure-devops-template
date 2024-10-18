@@ -36,5 +36,6 @@ $($Packages | ConvertFrom-Json) | ForEach-Object {
         Remove-Item -Path $appArtifactDestLocation -Force -Recurse
     } else {
         Write-Host "No artifact found named '$appArtifactZipLocation' for '$($_.name)' named application and '$Environment' environment."
+        exit 1
     }
 }
