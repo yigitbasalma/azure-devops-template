@@ -43,10 +43,10 @@ $($Packages | ConvertFrom-Json) | ForEach-Object {
 
         # If environment is pre-prod which is the last environment before production, save artifact into the NAS
         # for production deployment
-        if ( $Environment -eq "dev" ) {
+        if ( $Environment -eq "pre-prod" ) {
             $nasDestinationPath = "$nasLocation\$Environment\$ProjectName\$($_.name)\$BuildNumber"
 
-            Write-Host "Target environment is $Environment. Saving artifact into $nasDestinationPath for the production deployment." -ForegroundColor Green
+            Write-Host "Target environment is $Environment. Saving artifact into $nasDestinationPath for the production deployment."
 
             if( -Not(Test-Path $nasDestinationPath) ) {
                 New-Item -ItemType Directory -Path $nasDestinationPath
@@ -55,7 +55,7 @@ $($Packages | ConvertFrom-Json) | ForEach-Object {
             Copy-Item -Path $publishPath\* -Destination "$nasDestinationPath\" -Force -Recurse
         }
     } else {
-        Write-Host "No artifact found named '$appArtifactZipLocation' for '$($_.name)' named application and '$Environment' environment." -ForegroundColor Red
+        Write-Host "No artifact found named '$appArtifactZipLocation' for '$($_.name)' named application and '$Environment' environment."
         exit 1
     }
 }
