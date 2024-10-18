@@ -1,6 +1,7 @@
 param (
     [string]$Environment,
     [string]$Packages,
+    [string]$CurrentBuildPath,
     [string]$ArtifactDropLocation
 )
 
@@ -12,21 +13,21 @@ $($Packages | ConvertFrom-Json) | ForEach-Object {
 
     if ( Test-Path $appArtifactZipLocation ) {
         Write-Host "Package found for '$($_.name)'."
-        $appArtifactDestLocation = "$(build.artifactstagingdirectory)\$($_.type)_$($_.name)"
+        $appArtifactDestLocation = "$CurrentBuildPath\$($_.type)_$($_.name)"
 
         Add-Type -AssemblyName System.IO.Compression.FileSystem
         [System.IO.Compression.ZipFile]::ExtractToDirectory($appArtifactZipLocation, $appArtifactDestLocation)
 
         if ( Test-Path $configArtifactZipLocation ) {
             Write-Host "Config found for '$($_.name)'."
-            $configArtifactDestLocation = "$(build.artifactstagingdirectory)\config_$($_.name)"
+            $configArtifactDestLocation = "$CurrentBuildPath\config_$($_.name)"
 
             [System.IO.Compression.ZipFile]::ExtractToDirectory($configArtifactZipLocation, $configArtifactDestLocation)
             Copy-Item -Path $configArtifactDestLocation\$environment\* -Destination "$appArtifactDestLocation\" -Force -Recurse
             Remove-Item -Path $configArtifactDestLocation -Force -Recurse
         }
 
-        $publishPath = "$(build.artifactstagingdirectory)\publish\$(build.BuildNumber)"
+        $publishPath = "$CurrentBuildPath\publish\$(build.BuildNumber)"
 
         if( -Not(Test-Path $publishPath) ) {
             New-Item -ItemType Directory -Path $publishPath
