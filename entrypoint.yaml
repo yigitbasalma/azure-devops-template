@@ -99,7 +99,7 @@ stages:
     jobs:
       - ${{ each part in split(variables.DeploymentParts, ',') }}:
         - job: ${{ part }}
-          displayName: Deployment for ${{ part }}
+          displayName: Prepare for ${{ part }}
           ${{ if eq(part, 'part2') }}:
             dependsOn: part1
           steps:

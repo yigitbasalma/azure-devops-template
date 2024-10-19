@@ -11,7 +11,7 @@ parameters:
 
 jobs:
   - deployment: app_deployment_${{ parameters.deployment_part }}
-    displayName: Application Deployment
+    displayName: Application Deployment for ${{ parameters.deployment_part }}
     ${{ if eq(parameters.deployment_part, 'part2') }}:
       dependsOn:
         - part1
