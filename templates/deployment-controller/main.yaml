@@ -20,7 +20,7 @@ jobs:
       resourceType: virtualMachine
     strategy:
       runOnce:
-        preDeploy:
+        deploy:
           steps:
             - task: CmdLine@2
               displayName: IIS status
