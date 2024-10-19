@@ -117,7 +117,7 @@ stages:
               inputs:
                 targetType: 'inline'
                 script: |
-                  $packagesObject = ${{ parameters.packages }} | ConvertFrom-Json
+                  $packagesObject = $(Packages) | ConvertFrom-Json
                   Write-Host "##vso[task.setvariable variable=PackagesJSON]$packagesObject"
 
             - template: templates/deployment-controller/main.yaml
