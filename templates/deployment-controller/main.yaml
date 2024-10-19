@@ -10,7 +10,7 @@ parameters:
     type: string
 
 steps:
-  - ${{ each package in convertToJson(parameters.packages) }}:
+  - ${{ each package in fromJson(parameters.packages) }}:
     - deployment: ${{ package.name }}
       displayName: ${{ package.name }} Application Deployment
       workspace:
