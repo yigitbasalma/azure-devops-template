@@ -18,7 +18,7 @@ steps:
         $packagesObject = ${{ parameters.packages }} | ConvertFrom-Json
         Write-Host "##vso[task.setvariable variable=Packages]$packagesObject"
 
-  - ${{ each package in $($Packages | ConvertFrom-Json) }}:
+  - ${{ each package in $Packages }}:
     - deployment: ${{ package.name }}
       displayName: ${{ package.name }} Application Deployment
       workspace:
