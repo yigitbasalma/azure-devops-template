@@ -5,20 +5,12 @@ parameters:
   - name: deployment_part
     displayName: Deployment Part
     type: string
-  - name: packages
+  - name: packages_json
     displayName: Packages
     type: string
 
 steps:
-  - task: PowerShell@2
-    displayName: Convert package string into Json object
-    inputs:
-      targetType: 'inline'
-      script: |
-        $packagesObject = ${{ parameters.packages }} | ConvertFrom-Json
-        Write-Host "##vso[task.setvariable variable=Packages]$packagesObject"
-
-  - ${{ each package in $Packages }}:
+  - ${{ each package in ${{ parameters.packages_json }} }}:
     - deployment: ${{ package.name }}
       displayName: ${{ package.name }} Application Deployment
       workspace:
