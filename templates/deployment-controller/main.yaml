@@ -5,3 +5,26 @@ parameters:
   - name: deployment_part
     displayName: Deployment Part
     type: string
+  - name: packages
+    displayName: Packages
+    type: string
+
+steps:
+  - ${{ each package in $($Packages | ConvertFrom-Json) }}:
+    - deployment: ${{ package.name }}
+      displayName: ${{ package.name }} Application Deployment
+      workspace:
+        clean: resources
+      environment:
+        name: "$(ProjectName)-${{ parameters.environment }}"
+        tags: ${{ parameters.deployment_part }}
+        resourceType: virtualMachine
+      strategy:
+        runOnce:
+          preDeploy:
+            steps:
+              - task: CmdLine@2
+                displayName: IIS status
+                inputs:
+                  script: 'iisreset /status'
+                name: IISStatus
