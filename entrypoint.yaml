@@ -116,7 +116,7 @@ stages:
               parameters:
                 environment: ${{ parameters.environment }}
                 deployment_part: ${{ part }}
-                packages: $(Packages)
+                packages: "[]"
   - stage: complete
     displayName: Complete to Deployment Operation
     condition: always()
