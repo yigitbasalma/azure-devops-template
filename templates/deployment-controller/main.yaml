@@ -9,20 +9,21 @@ parameters:
     displayName: Packages
     type: string
 
-- deployment: app_deployment
-  displayName: Application Deployment
-  workspace:
-    clean: resources
-  environment:
-    name: "$(ProjectName)-${{ parameters.environment }}"
-    tags: ${{ parameters.deployment_part }}
-    resourceType: virtualMachine
-  strategy:
-    runOnce:
-      preDeploy:
-        steps:
-          - task: CmdLine@2
-            displayName: IIS status
-            inputs:
-              script: 'iisreset /status'
-            name: IISStatus
+jobs:
+  - deployment: app_deployment
+    displayName: Application Deployment
+    workspace:
+      clean: resources
+    environment:
+      name: "$(ProjectName)-${{ parameters.environment }}"
+      tags: ${{ parameters.deployment_part }}
+      resourceType: virtualMachine
+    strategy:
+      runOnce:
+        preDeploy:
+          steps:
+            - task: CmdLine@2
+              displayName: IIS status
+              inputs:
+                script: 'iisreset /status'
+              name: IISStatus
