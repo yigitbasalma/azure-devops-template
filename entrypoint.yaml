@@ -124,7 +124,7 @@ stages:
               parameters:
                 environment: ${{ parameters.environment }}
                 deployment_part: ${{ part }}
-                packages: $(PackagesJSON)
+                packages_json: $(PackagesJSON)
   - stage: complete
     displayName: Complete to Deployment Operation
     condition: always()
