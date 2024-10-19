@@ -12,6 +12,14 @@ parameters:
 jobs:
   - deployment: app_deployment_${{ parameters.deployment_part }}
     displayName: Application Deployment
+    ${{ if eq(parameters.deployment_part, 'part2') }}:
+      dependsOn:
+        - part1
+        - part2
+        - app_deployment_part1
+    ${{ else }}:
+      dependsOn:
+        - part1
     workspace:
       clean: resources
     environment:
