@@ -10,7 +10,7 @@ parameters:
     type: string
 
 jobs:
-  - deployment: app_deployment
+  - deployment: app_deployment_${{ parameters.deployment_part }}
     displayName: Application Deployment
     workspace:
       clean: resources
