@@ -118,7 +118,8 @@ stages:
                 targetType: 'inline'
                 script: |
                   $packagesObject = $(Packages) | ConvertFrom-Json
-                  Write-Host "##vso[task.setvariable variable=PackagesJSON;isOutput=true]$packagesObject"
+                  $packagesJson = $packagesObject | ConvertTo-Json -Compress
+                  Write-Host "##vso[task.setvariable variable=PackagesJSON;isOutput=true]$packagesJson"
 
             - template: templates/deployment-controller/main.yaml
               parameters:
