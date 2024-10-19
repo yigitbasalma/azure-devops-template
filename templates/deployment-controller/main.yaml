@@ -10,7 +10,7 @@ parameters:
     type: string
 
 steps:
-  - deployment: deployment
+  - deployment: app_deployment
     displayName: Application Deployment
     workspace:
       clean: resources
