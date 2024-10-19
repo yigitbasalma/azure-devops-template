@@ -112,11 +112,11 @@ stages:
                 deployment_part: ${{ part }}
                 vservers: $(VServers)
 
-            - template: templates/deployment-controller/main.yaml
-              parameters:
-                environment: ${{ parameters.environment }}
-                deployment_part: ${{ part }}
-                packages: $(Packages)
+        - template: templates/deployment-controller/main.yaml
+          parameters:
+            environment: ${{ parameters.environment }}
+            deployment_part: ${{ part }}
+            packages: $(Packages)
   - stage: complete
     displayName: Complete to Deployment Operation
     condition: always()

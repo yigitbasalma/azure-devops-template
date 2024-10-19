@@ -9,7 +9,7 @@ parameters:
     displayName: Packages
     type: string
 
-jobs:
+steps:
   - deployment: app_deployment
     displayName: Application Deployment
     workspace:
