@@ -112,20 +112,11 @@ stages:
                 deployment_part: ${{ part }}
                 vservers: $(VServers)
 
-            - task: PowerShell@2
-              displayName: Convert package string into Json object
-              inputs:
-                targetType: 'inline'
-                script: |
-                  $packagesObject = $(Packages) | ConvertFrom-Json
-                  $packagesJson = $packagesObject | ConvertTo-Json -Compress
-                  Write-Host "##vso[task.setvariable variable=PackagesJSON;isOutput=true]$packagesJson"
-
             - template: templates/deployment-controller/main.yaml
               parameters:
                 environment: ${{ parameters.environment }}
                 deployment_part: ${{ part }}
-                packages_json: $(PackagesJSON)
+                packages: $(Packages)
   - stage: complete
     displayName: Complete to Deployment Operation
     condition: always()

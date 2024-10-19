@@ -5,12 +5,12 @@ parameters:
   - name: deployment_part
     displayName: Deployment Part
     type: string
-  - name: packages_json
+  - name: packages
     displayName: Packages
-    type: object
+    type: string
 
 steps:
-  - ${{ each package in parameters.packages_json }}:
+  - ${{ each package in parameters.packages }}:
     - deployment: ${{ package.name }}
       displayName: ${{ package.name }} Application Deployment
       workspace:
