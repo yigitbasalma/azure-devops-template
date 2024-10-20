@@ -28,7 +28,7 @@ jobs:
       resourceType: virtualMachine
     strategy:
       runOnce:
-        preDeploy:
+        deploy:
           steps:
             - download: none
             - checkout: none
@@ -42,10 +42,6 @@ jobs:
                 itemPattern: '**/*.zip'
                 downloadPath: '$(Agent.BuildDirectory)/DownloadBuildArtifacts'
                 checkDownloadedFiles: true
-        deploy:
-          steps:
-            - download: none
-            - checkout: none
 
             - task: CmdLine@2
               displayName: IIS status
