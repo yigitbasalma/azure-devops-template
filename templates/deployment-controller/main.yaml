@@ -43,8 +43,12 @@ jobs:
                 downloadPath: '$(Agent.BuildDirectory)/DownloadBuildArtifacts'
                 checkDownloadedFiles: true
 
-            - task: CmdLine@2
-              displayName: IIS status
+            - task: PowerShell@2
+              displayName: Pre-Check for the deployment
               inputs:
-                script: 'iisreset /status'
-              name: IISStatus
+                filePath: $(Agent.BuildDirectory)/s/azure-devops-template/templates/artifact-controller/scripts/pre-checks.ps1
+                arguments: |
+                  -Environment ${{ parameters.environment }} `
+                  -Packages '${{ parameters.packages }}' `
+                  -BuildNumber '$(build.BuildNumber)' `
+                  -CurrentBuildPath '$(build.artifactstagingdirectory)'
