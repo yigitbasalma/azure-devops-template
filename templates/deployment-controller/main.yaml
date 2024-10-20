@@ -28,6 +28,20 @@ jobs:
       resourceType: virtualMachine
     strategy:
       runOnce:
+        preDeploy:
+          steps:
+            - download: none
+            - checkout: none
+
+            - task: DownloadBuildArtifacts@0
+              displayName: Download Build Artifacts From Azure
+              inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: '$(build.BuildNumber)'
+                itemPattern: '**/*.zip'
+                downloadPath: '$(Agent.BuildDirectory)/DownloadBuildArtifacts'
+                checkDownloadedFiles: true
         deploy:
           steps:
             - download: none
