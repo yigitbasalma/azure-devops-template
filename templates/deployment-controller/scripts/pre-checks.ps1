@@ -21,6 +21,13 @@ foreach ( $package in $($Packages | ConvertFrom-Json) ) {
         continue
     }
     Write-Host "Pool named '$($package.iis.poolName)' is found on $env:COMPUTERNAME"
+
+    $IISSiteState = & $IISManagerCommand list site /name:$($package.iis.name) /text:state
+    if ( ([string]::IsNullOrEmpty($IISSiteState)) ) {
+        Write-Host "Site named '$($package.iis.name)' is not found on $env:COMPUTERNAME"
+        continue
+    }
+    Write-Host "Site named '$($package.iis.name)' is found on $env:COMPUTERNAME"
 }
 
 exit 0
