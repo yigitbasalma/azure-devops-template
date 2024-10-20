@@ -30,6 +30,9 @@ jobs:
       runOnce:
         deploy:
           steps:
+            - download: none
+            - checkout: none
+
             - task: CmdLine@2
               displayName: IIS status
               inputs:
