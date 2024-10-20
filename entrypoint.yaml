@@ -101,7 +101,9 @@ stages:
         - job: ${{ part }}
           displayName: Prepare for ${{ part }}
           ${{ if eq(part, 'part2') }}:
-            dependsOn: part1
+            dependsOn:
+              - part1
+              - app_deployment_part1
           steps:
             - checkout: self
             - checkout: templates
