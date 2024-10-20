@@ -51,4 +51,4 @@ jobs:
                   -Environment ${{ parameters.environment }} `
                   -Packages '${{ parameters.packages }}' `
                   -BuildNumber '$(build.BuildNumber)' `
-                  -CurrentBuildPath '$(build.artifactstagingdirectory)'
+                  -AgentBuildPath '$(Agent.BuildDirectory)/DownloadBuildArtifacts'
