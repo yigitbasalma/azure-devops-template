@@ -31,7 +31,7 @@ jobs:
         deploy:
           steps:
             - download: none
-            - checkout: none
+            - checkout: templates
 
             - task: DownloadBuildArtifacts@0
               displayName: Download Build Artifacts From Azure
