@@ -24,7 +24,7 @@ jobs:
       clean: resources
     environment:
       name: "$(ProjectName)-${{ parameters.environment }}"
-      tags: ${{ parameters.deployment_part }}
+      tags: ${{ parameters.environment }},${{ parameters.deployment_part }}
       resourceType: virtualMachine
     strategy:
       runOnce:
