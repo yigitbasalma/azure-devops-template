@@ -15,7 +15,7 @@ foreach ( $package in $($Packages | ConvertFrom-Json) ) {
     }
     Write-Host "Package found for $($package.name) on $ArtifactPath at $env:COMPUTERNAME"
 
-    $IISPoolState = & $IISManagerCommand list apppool /name:$($package.iis.poolName) /text:state
+    $IISPoolState = & {$IISManagerCommand list apppool /name:$($package.iis.poolName) /text:state}
     if ( -NOT ([string]::IsNullOrEmpty($IISPoolState)) ) {
         Write-Host "Pool named '$($package.iis.poolName)' is not found on $env:COMPUTERNAME"
         continue
