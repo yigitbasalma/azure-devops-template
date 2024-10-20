@@ -46,7 +46,7 @@ jobs:
             - task: PowerShell@2
               displayName: Pre-Check for the deployment
               inputs:
-                filePath: $(Agent.BuildDirectory)/s/azure-devops-template/templates/deployment-controller/scripts/pre-checks.ps1
+                filePath: $(Agent.BuildDirectory)/s/templates/deployment-controller/scripts/pre-checks.ps1
                 arguments: |
                   -Environment ${{ parameters.environment }} `
                   -Packages '${{ parameters.packages }}' `
