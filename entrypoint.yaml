@@ -35,8 +35,8 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                Get-ChildItem -Path . -Recurse
-            displayName: 'List Directory Contents (PowerShell)'
+                Write-Host "Repository Path: $(Build.SourcesDirectory)"
+            displayName: 'Get Repository Path (PowerShell)'
 
           - task: PowerShell@2
             displayName: Prevent concurrent task runs
