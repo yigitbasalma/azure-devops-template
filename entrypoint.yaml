@@ -35,7 +35,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                Write-Host "Repository Path: $(Build.Repository.LocalPath)"
+                Write-Host "Repository Path: $(Build.Repository.Name)"
             displayName: 'Get Repository Path (PowerShell)'
 
           - task: PowerShell@2
