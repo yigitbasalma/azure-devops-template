@@ -38,7 +38,7 @@ stages:
               targetType: 'inline'
               script: |
                 $jsonString = (Get-Content -Path $(RepositorySelfPath)\.variables\${{ parameters.environment }}.json -Raw) -replace "`r`n", "" -replace "`n", "" -replace "`r", ""
-                Write-Host "##vso[task.setvariable variable=Packages]$jsonString"
+                Write-Host "##vso[task.setvariable variable=Packages;isOutput=true]$jsonString"
 
           - task: PowerShell@2
             displayName: Prevent concurrent task runs
@@ -104,7 +104,7 @@ stages:
     dependsOn: prepare
     variables:
       VServers: $[stageDependencies.prepare.Job.outputs['GetServers.VServers']]
-      Packages: $(Packages)
+      Packages: $[stageDependencies.prepare.Job.outputs['Consts.Packages']]
       DeploymentParts: part1,part2
     jobs:
       - ${{ each part in split(variables.DeploymentParts, ',') }}:
