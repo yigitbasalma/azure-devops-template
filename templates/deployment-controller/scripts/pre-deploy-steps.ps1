@@ -5,11 +5,13 @@ param (
     [string]$BuildNumber
 )
 
-$IISManagerCommand = "C:\Windows\system32\inetsrv\appcmd"
-
 foreach ( $package in $($Packages | ConvertFrom-Json) ) {
-    # Stop app pool
-    & $IISManagerCommand stop apppool /apppool.name="$($package.iis.poolName)"
+    Stop-WebAppPool -Name "$($package.iis.poolName)"
+    while ( (Get-WebAppPoolState -Name "$($package.iis.poolName)").Value -ne "Stopped" ) {
+        Write-Host "[$($package.iis.poolName)] Waiting for the application pool to stop..."
+        Start-Sleep -Seconds 1
+    }
+    Write-Host "[$($package.iis.poolName)] The application pool is now stopped."
 }
 
 exit 0
