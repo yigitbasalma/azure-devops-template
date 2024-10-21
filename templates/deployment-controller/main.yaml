@@ -56,7 +56,7 @@ jobs:
             - task: PowerShell@2
               displayName: Pre-Deploy steps for the deployment
               inputs:
-                filePath: $(Agent.BuildDirectory)/s/templates/deployment-controller/scripts/pre-checks.ps1
+                filePath: $(Agent.BuildDirectory)/s/templates/deployment-controller/scripts/pre-deploy-steps.ps1
                 arguments: |
                   -Environment ${{ parameters.environment }} `
                   -Packages '${{ parameters.packages }}' `
