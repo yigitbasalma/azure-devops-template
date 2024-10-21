@@ -38,7 +38,7 @@ stages:
               targetType: 'inline'
               script: |
                 $jsonString = (Get-Content -Path $(RepositorySelfPath)\.variables\${{ parameters.environment }}.json -Raw) -replace "`r`n", "" -replace "`n", "" -replace "`r", ""
-                Write-Host "##vso[task.setvariable variable=Packages]$jsonString"
+                Write-Host "##vso[task.setvariable variable=Packages;isOutput=true]$jsonString"
 
           - task: PowerShell@2
             displayName: Prevent concurrent task runs
@@ -98,7 +98,7 @@ stages:
           - template: templates/artifact-controller/main.yaml
             parameters:
               environment: ${{ parameters.environment }}
-              packages: $(Packages)
+              packages: $(Consts.Packages)
   - stage: deploy
     displayName: Start to Deployment Operation
     dependsOn: prepare
