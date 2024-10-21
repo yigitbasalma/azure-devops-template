@@ -98,7 +98,7 @@ stages:
           - template: templates/artifact-controller/main.yaml
             parameters:
               environment: ${{ parameters.environment }}
-              packages: $(variables['Consts.Packages'])
+              packages: ${{ variables['Consts.Packages'] }}
   - stage: deploy
     displayName: Start to Deployment Operation
     dependsOn: prepare
