@@ -104,7 +104,7 @@ stages:
     dependsOn: prepare
     variables:
       VServers: $[stageDependencies.prepare.Job.outputs['GetServers.VServers']]
-      Packages: $[stageDependencies.prepare.Job.outputs['Consts.Packages']]
+      Packages: $(Packages)
       DeploymentParts: part1,part2
     jobs:
       - ${{ each part in split(variables.DeploymentParts, ',') }}:
