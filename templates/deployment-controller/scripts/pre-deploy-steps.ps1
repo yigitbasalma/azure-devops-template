@@ -6,7 +6,7 @@ param (
 )
 
 foreach ( $package in $($Packages | ConvertFrom-Json) ) {
-    if ( (Get-WebAppPoolState -Name "$($package.iis.poolName)").Value -ne "Stopped" ) {
+    if ( (Get-WebAppPoolState -Name "$($package.iis.poolName)").Value -eq "Stopped" ) {
         Write-Host "[$($package.iis.poolName)] The application pool is already stopped."
     } else {
         Stop-WebAppPool -Name "$($package.iis.poolName)"
