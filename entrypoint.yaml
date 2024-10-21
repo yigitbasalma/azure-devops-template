@@ -37,7 +37,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                $jsonString = (Get-Content -Path $(RepositorySelfPath)\.variables\${{ parameters.environment }}.json -Raw | out-null) -replace "`r`n", "" -replace "`n", "" -replace "`r", ""
+                $jsonString = (Get-Content -Path $(RepositorySelfPath)\.variables\${{ parameters.environment }}.json -Raw) -replace "`r`n", "" -replace "`n", "" -replace "`r", ""
                 Write-Host "##vso[task.setvariable variable=Packages;isOutput=true]$jsonString"
 
           - task: PowerShell@2
