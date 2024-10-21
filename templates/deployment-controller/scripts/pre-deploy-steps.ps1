@@ -48,7 +48,7 @@ function Do-Retention-Policy {
 
     $objects | ForEach-Object {
         $oldBackup = "$BackupRootPath\$($_.Name)"
-        Remove-Item -Path $oldBackup -Recurse -Force
+        Remove-Item -Path $oldBackup -Recurse -Force | out-null
         Write-Host "[$oldBackup] Old backup file removed."
     }
 }

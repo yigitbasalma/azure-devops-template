@@ -33,7 +33,7 @@ $($Packages | ConvertFrom-Json) | ForEach-Object {
         $publishPath = "$CurrentBuildPath\publish\$BuildNumber"
 
         if( -Not(Test-Path $publishPath) ) {
-            New-Item -ItemType Directory -Path $publishPath
+            New-Item -ItemType Directory -Path $publishPath | out-null
         }
 
         [Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem")
@@ -49,7 +49,7 @@ $($Packages | ConvertFrom-Json) | ForEach-Object {
             Write-Host "Target environment is $Environment. Saving artifact into $nasDestinationPath for the production deployment."
 
             if( -Not(Test-Path $nasDestinationPath) ) {
-                New-Item -ItemType Directory -Path $nasDestinationPath
+                New-Item -ItemType Directory -Path $nasDestinationPath | out-null
             }
 
             Copy-Item -Path $publishPath\* -Destination "$nasDestinationPath\" -Force -Recurse
