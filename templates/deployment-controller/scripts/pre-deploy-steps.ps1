@@ -17,13 +17,13 @@ function Take-Backup {
     $iisWebsitePath = Get-WebFilePath "IIS:\Sites\$SiteName"
 
     if ( Test-Path $tempDir ) {
-        Remove-Item -Path $tempDir -Recurse -Force
+        Remove-Item -Path $tempDir -Recurse -Force | out-null
     } else {
-        New-Item -ItemType "directory" -Path $tempDir
+        New-Item -ItemType "directory" -Path $tempDir | out-null
     }
 
     if ( -NOT(Test-Path $BackupPath) ) {
-        New-Item -ItemType "directory" -Path $BackupPath
+        New-Item -ItemType "directory" -Path $BackupPath | out-null
     }
 
     & robocopy $iisWebsitePath.FullName $tempDir /MIR /XF UmbracoTraceLog* /XD *cache* /NFL /NDL /NJH /NJS
