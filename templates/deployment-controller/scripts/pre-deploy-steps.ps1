@@ -17,11 +17,11 @@ foreach ( $package in $($Packages | ConvertFrom-Json) ) {
         Write-Host "[$($package.iis.poolName)] The application pool is now stopped."
     }
 
-    if ( (Get-WebSite -Name "$($package.iis.name)").Value -eq "Stopped" ) {
+    if ( (Get-WebSite -Name "$($package.iis.name)").State -eq "Stopped" ) {
         Write-Host "[$($package.iis.name)] The website is already stopped."
     } else {
         Stop-WebSite -Name "$($package.iis.name)"
-        while ( (Get-WebSite -Name "$($package.iis.name)").Value -ne "Stopped" ) {
+        while ( (Get-WebSite -Name "$($package.iis.name)").State -ne "Stopped" ) {
             Write-Host "[$($package.iis.name)] Waiting for the website to stop..."
             Start-Sleep -Seconds 30
         }
