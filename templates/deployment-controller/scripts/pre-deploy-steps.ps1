@@ -40,7 +40,7 @@ function Do-Retention-Policy {
     param (
         [string]$SiteName,
         [string]$BackupRootPath,
-        [integer]$Retention
+        [int]$Retention
     )
 
     $backupPath = "$BackupRootPath\$SiteName"
