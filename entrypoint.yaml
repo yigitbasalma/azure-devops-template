@@ -32,11 +32,12 @@ stages:
           - checkout: templates
 
           - task: PowerShell@2
+            displayName: Define const variables
             inputs:
               targetType: 'inline'
               script: |
-                Write-Host "Repository Path: $(RepositorySelfPath)"
-            displayName: 'Get Repository Path (PowerShell)'
+                $jsonString = Get-Content -Path $(RepositorySelfPath)\.variables\${{ parameters.environment }}.json -Raw
+                Write-Host "##vso[task.setvariable variable=Packages]$jsonString"
 
           - task: PowerShell@2
             displayName: Prevent concurrent task runs
