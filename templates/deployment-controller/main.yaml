@@ -52,3 +52,13 @@ jobs:
                   -Packages '${{ parameters.packages }}' `
                   -BuildNumber '$(build.BuildNumber)' `
                   -AgentBuildPath '$(Agent.BuildDirectory)\DownloadBuildArtifacts'
+
+            - task: PowerShell@2
+              displayName: Pre-Deploy steps for the deployment
+              inputs:
+                filePath: $(Agent.BuildDirectory)/s/templates/deployment-controller/scripts/pre-checks.ps1
+                arguments: |
+                  -Environment ${{ parameters.environment }} `
+                  -Packages '${{ parameters.packages }}' `
+                  -BuildNumber '$(build.BuildNumber)' `
+                  -AgentBuildPath '$(Agent.BuildDirectory)\DownloadBuildArtifacts'
