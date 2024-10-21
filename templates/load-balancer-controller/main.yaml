@@ -21,7 +21,6 @@ steps:
         -LBAddress $(NetScalerURL) `
         -LBUsername $(NetScalerUsername) `
         -LBPassword $(NetScalerPassword) `
-        -VirtualServerName $(VirtualServerName) `
         -VServers '${{ parameters.vservers }}' `
         -DeploymentPart '${{ parameters.deployment_part }}' `
         -Operation ${{ parameters.operation }}
