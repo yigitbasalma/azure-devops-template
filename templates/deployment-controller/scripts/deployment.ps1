@@ -19,5 +19,5 @@ foreach ( $package in $($Packages | ConvertFrom-Json) ) {
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::ExtractToDirectory($appArtifactZipLocation, $tempDir)
 
-    Copy-Item -Path "$tempDir\*" -Destination $site.physicalPath -Recurse
+    Copy-Item -Path "$tempDir\*" -Destination $site.physicalPath -Recurse -Force
 }
