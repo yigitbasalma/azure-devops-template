@@ -62,3 +62,10 @@ jobs:
                   -Packages '${{ parameters.packages }}' `
                   -BuildNumber '$(build.BuildNumber)' `
                   -AgentBuildPath '$(Agent.BuildDirectory)\DownloadBuildArtifacts'
+
+            - task: PowerShell@2
+              displayName: Post-Deploy steps for the deployment
+              inputs:
+                filePath: $(Agent.BuildDirectory)/s/templates/deployment-controller/scripts/post-deploy-steps.ps1
+                arguments: |
+                  -Packages '${{ parameters.packages }}'
