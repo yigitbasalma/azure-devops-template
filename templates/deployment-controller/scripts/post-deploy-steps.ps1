@@ -20,7 +20,7 @@ function Do-Healthcheck {
     }
 
     while ( $currentRetry -le $maxRetry ) {
-        $response = Invoke-WebRequest -Uri "http://$AppAddr/$Path" -Method GET -Headers $headers -TimeoutSec $timeoutSec
+        $response = Invoke-WebRequest -UseBasicParsing -Uri "http://$AppAddr/$Path" -Method GET -Headers $headers -TimeoutSec $timeoutSec
 
         try {
             if ( $successCodes.Contains($response.StatusCode)) {
