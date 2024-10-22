@@ -47,7 +47,7 @@ function Do-Retention-Policy {
     $objects = Get-ChildItem -Path $backupPath | Sort-Object -Descending -Property LastWriteTime | select -Skip $Retention
 
     $objects | ForEach-Object {
-        $oldBackup = "$BackupRootPath\$($_.Name)"
+        $oldBackup = "$backupPath\$($_.Name)"
         Remove-Item -Path $oldBackup -Recurse -Force | out-null
         Write-Host "[$oldBackup] Old backup file removed."
     }
