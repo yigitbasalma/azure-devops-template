@@ -4,7 +4,7 @@ param (
 
 function Do-Healthcheck {
     param (
-        [string]$Host,
+        [string]$AppAddr,
         [string]$Path,
         [string]$ReturnCodes,
         [string]$ExpectedString
@@ -20,20 +20,20 @@ function Do-Healthcheck {
     }
 
     while ( $currentRetry -gt $maxRetry ) {
-        $response = Invoke-WebRequest -Uri "http://$Host/$Path" -Method GET -Headers $headers -TimeoutSec $timeoutSec
+        $response = Invoke-WebRequest -Uri "http://$AppAddr/$Path" -Method GET -Headers $headers -TimeoutSec $timeoutSec
 
         try {
             if ( $successCodes.Contains($response.StatusCode)) {
                 if (-NOT([string]::IsNullOrEmpty($ExpectedString))) {
                     if ($response.Content -eq $ExpectedString) {
-                        Write-Host "[$Host/$Path] Application up and running."
+                        Write-Host "[$AppAddr/$Path] Application up and running."
                     } else {
-                        raise "[Try $currentRetry][$Host/$Path] Invalid response code found: $( $response.StatusCode ) with $( $response.Content )"
+                        raise "[Try $currentRetry][$AppAddr/$Path] Invalid response code found: $( $response.StatusCode ) with $( $response.Content )"
                     }
                 }
-                Write-Host "[Try $currentRetry][$Host/$Path] Application up and running."
+                Write-Host "[Try $currentRetry][$AppAddr/$Path] Application up and running."
             } else {
-                raise "[Try $currentRetry][$Host/$Path] Invalid response code found: $( $response.StatusCode ) with $( $response.Content )"
+                raise "[Try $currentRetry][$AppAddr/$Path] Invalid response code found: $( $response.StatusCode ) with $( $response.Content )"
             }
         } catch {
             $currentRetry++
@@ -49,6 +49,6 @@ function Do-Healthcheck {
 
 foreach ( $package in $($Packages | ConvertFrom-Json) ) {
     if ( $package.healthcheck.enabled ) {
-        Do-Healthcheck -Host $package.iis.host -Path $package.healthcheck.path -ReturnCodes $package.healthcheck.returnCodes -ExpectedString $package.healthcheck.expectedString
+        Do-Healthcheck -AppAddr $package.iis.host -Path $package.healthcheck.path -ReturnCodes $package.healthcheck.returnCodes -ExpectedString $package.healthcheck.expectedString
     }
 }
