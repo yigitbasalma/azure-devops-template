@@ -20,7 +20,7 @@ function Do-Healthcheck {
     }
 
     while ( $currentRetry -gt $maxRetry ) {
-        $response = Invoke-WebRequest -Uri "$Host/$Path" -Method GET -Headers $headers -TimeoutSec $timeoutSec
+        $response = Invoke-WebRequest -Uri "http://$Host/$Path" -Method GET -Headers $headers -TimeoutSec $timeoutSec
 
         try {
             if ( $successCodes.Contains($response.StatusCode)) {
@@ -48,5 +48,7 @@ function Do-Healthcheck {
 }
 
 foreach ( $package in $($Packages | ConvertFrom-Json) ) {
-    # Healthchecks
+    if ( $package.healthcheck.enabled ) {
+        Do-Healthcheck -Host $package.iis.host -Path $package.healthcheck.path -ReturnCodes $package.healthcheck.returnCodes -ExpectedString $package.healthcheck.expectedString
+    }
 }
