@@ -19,7 +19,7 @@ function Do-Healthcheck {
         "User-Agent" = "Azure Devops Pipeline Health Check"
     }
 
-    while ( $currentRetry -gt $maxRetry ) {
+    while ( $currentRetry -le $maxRetry ) {
         $response = Invoke-WebRequest -Uri "http://$AppAddr/$Path" -Method GET -Headers $headers -TimeoutSec $timeoutSec
 
         try {
