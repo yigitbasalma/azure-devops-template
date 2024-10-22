@@ -24,11 +24,11 @@ function Do-Healthcheck {
 
         try {
             if ( $successCodes.Contains($response.StatusCode)) {
-                if (-NOT([string]::IsNullOrEmpty($ExpectedString))) {
+                if ( $ExpectedString ) {
                     if ($response.Content -eq $ExpectedString) {
                         Write-Host "[$AppAddr/$Path] Application up and running."
                     } else {
-                        raise "[Try $currentRetry][$AppAddr/$Path] Invalid response code found: $( $response.StatusCode ) with $( $response.Content )"
+                        raise "[Try $currentRetry][$AppAddr/$Path] Invalid response found: $( $response.StatusCode ) with $( $response.Content )"
                     }
                 }
                 Write-Host "[Try $currentRetry][$AppAddr/$Path] Application up and running."
