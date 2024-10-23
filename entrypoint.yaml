@@ -4,16 +4,6 @@ trigger: none
 #  name: Default
 
 parameters:
-  - name: env_provider
-    displayName: Environment Provider
-    type: string
-    values:
-      - project
-      - repo
-  - name: project
-    displayName: Project Name
-    type: string
-    default: Sample Project A
   - name: environment
     displayName: Environment
     type: string

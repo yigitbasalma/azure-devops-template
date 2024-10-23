@@ -1,0 +1,55 @@
+pool:
+  name: Default
+
+resources:
+  repositories:
+  - repository: templates
+    type: git
+    name: azure-devops-template
+
+parameters:
+  - name: env_provider
+    displayName: Environment Provider
+    type: string
+    values:
+      - repo
+      - project
+  - name: project
+    displayName: Project Name
+    type: string
+    default: sample-project-a
+  - name: environment
+    displayName: Environment
+    type: string
+    values:
+      - dev
+      - test
+      - staging
+  - name: artifact_drop_path
+    displayName: Artifact Drop Path
+    type: string
+    default: C:\artifact\sample-project-a\dev
+
+variables:
+  - name: AutoCreateEnv
+    value: false
+  - name: AutoRegisterServers
+    value: false
+  - name: RepositorySelfPath
+    value: "$(Build.SourcesDirectory)/$(Build.Repository.Name)"
+  - name: TemplateRepositoryName
+    value: azure-devops-template
+  - group: commons
+  - ${{ if eq( parameters.env_provider, 'project' ) }}:
+    - group: ${{ parameters.project }}
+  - name: DeploymentGroup
+    value: "${{ parameters.project }}-${{ parameters.environment }}"
+  - name: ArtifactDropLocation
+    value: "${{ parameters.artifact_drop_path }}"
+  - name: ProjectName
+    value: "${{ parameters.project }}"
+
+extends:
+  template: entrypoint.yaml@templates
+  parameters:
+    environment: ${{ parameters.environment }}
