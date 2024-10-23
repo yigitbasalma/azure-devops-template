@@ -16,7 +16,7 @@ steps:
   - task: PowerShell@2
     displayName: Disable vservers for deployment
     inputs:
-      filePath: $(Agent.BuildDirectory)/s/azure-devops-template/templates/load-balancer-controller/scripts/status-controller.ps1
+      filePath: $(Agent.BuildDirectory)/s/$(TemplateRepositoryName)/templates/load-balancer-controller/scripts/status-controller.ps1
       arguments: |
         -LBAddress $(NetScalerURL) `
         -LBUsername $(NetScalerUsername) `

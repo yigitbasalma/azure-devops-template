@@ -46,7 +46,7 @@ stages:
             continueOnError: false
             timeoutInMinutes: 30
             inputs:
-              filePath: azure-devops-template/scripts/prevent-concurrent-task.ps1
+              filePath: $(TemplateRepositoryName)/scripts/prevent-concurrent-task.ps1
               arguments: |
                 -SystemDBAddress $(SystemDBAddress) `
                 -SystemDBDatabase $(SystemDBDatabase) `
@@ -61,7 +61,7 @@ stages:
             displayName: Create server environment if couldn't exists
             condition: eq(variables.AutoCreateEnv, true)
             inputs:
-              filePath: azure-devops-template/scripts/create-env-on-ado.ps1
+              filePath: $(TemplateRepositoryName)/scripts/create-env-on-ado.ps1
               arguments: |
                 -ProjectName $(ProjectName) `
                 -ParentProjectName $(ParentProjectName) `
@@ -72,7 +72,7 @@ stages:
             condition: eq(variables.AutoRegisterServers, true)
             displayName: Gather servers from Load Balancer and add them into environment
             inputs:
-              filePath: azure-devops-template/scripts/add-servers-from-lb.ps1
+              filePath: $(TemplateRepositoryName)/scripts/add-servers-from-lb.ps1
               arguments: |
                 -LBAddress $(NetScalerURL) `
                 -LBUsername $(NetScalerUsername) `
@@ -89,7 +89,7 @@ stages:
             name: GetServers
             displayName: Collect server informations from ADS
             inputs:
-              filePath: azure-devops-template/scripts/collect-server-informations.ps1
+              filePath: $(TemplateRepositoryName)/scripts/collect-server-informations.ps1
               arguments: |
                 -ProjectName $(ProjectName) `
                 -ParentProjectName $(ParentProjectName) `
@@ -143,7 +143,7 @@ stages:
             displayName: Complete release operation
             timeoutInMinutes: 30
             inputs:
-              filePath: azure-devops-template/scripts/prevent-concurrent-task.ps1
+              filePath: $(TemplateRepositoryName)/scripts/prevent-concurrent-task.ps1
               arguments: |
                 -SystemDBAddress $(SystemDBAddress) `
                 -SystemDBDatabase $(SystemDBDatabase) `
