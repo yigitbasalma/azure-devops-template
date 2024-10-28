@@ -1,0 +1,30 @@
+[
+  {
+    "name": "tfstest",
+    "type": "web",
+    "loadBalancer": {
+        "virtualServerName": "sample-project-a"
+    },
+    "iis": {
+      "name": "tfstest",
+      "poolName": "tfstest",
+      "path": "C:\\applications\\dev",
+      "host": "localhost"
+    },
+    "artifact": {
+      "name": "tfstest.zip",
+      "config": "tfstest_Config.zip"
+    },
+    "healthCheck": {
+      "enabled": false,
+      "path": "/",
+      "returnCodes": [200, 201],
+      "expectedString": ""
+    },
+    "backup": {
+        "enabled": true,
+        "path": "C:\\Backup\\Sites",
+        "retention": 7
+    }
+  }
+]
