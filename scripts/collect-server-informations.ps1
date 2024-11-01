@@ -27,6 +27,7 @@ $response = Invoke-RestMethod -Uri "$url/$environmentId/providers/virtualmachine
 $response.value | ForEach-Object {
     $server = [PSCustomObject]@{
         Name         = $_.name
+        IP           = (Resolve-DnsName -Name $_.name | Where-Object { $_.QueryType -eq "A" }).IPAddress
         Tags         = $_.tags
     }
     $vServers += $server
